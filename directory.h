@@ -12,9 +12,10 @@ typedef struct Directory {
 
 Directory *createDirectory(char *name);
 
-Directory *createDirectory(char *name);
+Directory *cd(Directory *current, char *name);
 
 void mkdirDirectory(Directory *current, char *name);
 void ls(Directory *current);
+
 
 #endif

@@ -53,3 +53,32 @@ void ls(Directory *current)
         temp = temp->nextSibling;
     }
 }
+
+Directory *cd(Directory *current, char *name)
+{
+    // voltar para o diretório pai
+    if(strcmp(name, "..") == 0)
+    {
+        if(current->parent != NULL)
+            return current->parent;
+
+        return current;
+    }
+
+    // procurar entre os filhos
+    Directory *temp = current->firstChild;
+
+    while(temp != NULL)
+    {
+        if(strcmp(temp->name, name) == 0)
+        {
+            return temp;
+        }
+
+        temp = temp->nextSibling;
+    }
+
+    printf("Diretorio '%s' nao encontrado.\n", name);
+
+    return current;
+}
