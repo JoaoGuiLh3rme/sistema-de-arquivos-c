@@ -13,6 +13,7 @@ Directory *createDirectory(char *name)
     dir->parent = NULL;
     dir->firstChild = NULL;
     dir->nextSibling = NULL;
+    dir->files = NULL;
 
     return dir;
 }
@@ -45,18 +46,25 @@ void mkdirDirectory(Directory *current, char *name)
 
 void ls(Directory *current)
 {
-    Directory *temp = current->firstChild;
+    Directory *dir = current->firstChild;
 
-    while(temp != NULL)
+    while(dir != NULL)
     {
-        printf("%s\n", temp->name);
-        temp = temp->nextSibling;
+        printf("[DIR] %s\n", dir->name);
+        dir = dir->nextSibling;
+    }
+
+    File *file = current->files;
+
+    while(file != NULL)
+    {
+        printf("[FILE] %s\n", file->name);
+        file = file->next;
     }
 }
 
 Directory *cd(Directory *current, char *name)
 {
-    // voltar para o diretório pai
     if(strcmp(name, "..") == 0)
     {
         if(current->parent != NULL)
@@ -65,7 +73,6 @@ Directory *cd(Directory *current, char *name)
         return current;
     }
 
-    // procurar entre os filhos
     Directory *temp = current->firstChild;
 
     while(temp != NULL)
@@ -164,4 +171,31 @@ void rm(Directory *current, char *name)
     }
 
     printf("Diretorio '%s' nao encontrado.\n", name);
+}
+
+void touch(Directory *current, char *filename)
+{
+    File *newFile = malloc(sizeof(File));
+
+    if(newFile == NULL)
+        return;
+
+    strcpy(newFile->name, filename);
+    newFile->next = NULL;
+
+    if(current->files == NULL)
+    {
+        current->files = newFile;
+    }
+    else
+    {
+        File *temp = current->files;
+
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+
+        temp->next = newFile;
+    }
 }
