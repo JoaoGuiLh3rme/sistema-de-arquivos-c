@@ -15,7 +15,12 @@ Directory *createDirectory(char *name);
 Directory *cd(Directory *current, char *name);
 
 void mkdirDirectory(Directory *current, char *name);
+
 void ls(Directory *current);
 
+void pwd(Directory *current);
+
+void rm(Directory *current, char *name);
+void freeDirectory(Directory *dir);
 
 #endif

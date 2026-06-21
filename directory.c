@@ -82,3 +82,86 @@ Directory *cd(Directory *current, char *name)
 
     return current;
 }
+
+void pwd(Directory *current)
+{
+    if (current == NULL)
+        return;
+
+    if (current->parent == NULL)
+    {
+        printf("/\n");
+        return;
+    }
+
+    char caminho[500] = "";
+    char temp[500];
+
+    Directory *dir = current;
+
+    while (dir != NULL && dir->parent != NULL)
+    {
+        strcpy(temp, "/");
+        strcat(temp, dir->name);
+        strcat(temp, caminho);
+        strcpy(caminho, temp);
+
+        dir = dir->parent;
+    }
+
+    printf("%s\n", caminho);
+}
+
+void freeDirectory(Directory *dir)
+{
+    if (dir == NULL)
+        return;
+
+    Directory *child = dir->firstChild;
+
+    while (child != NULL)
+    {
+        Directory *next = child->nextSibling;
+        freeDirectory(child);
+        child = next;
+    }
+
+    free(dir);
+}
+
+void rm(Directory *current, char *name)
+{
+    if (current == NULL || current->firstChild == NULL)
+    {
+        printf("Diretorio '%s' nao encontrado.\n", name);
+        return;
+    }
+
+    Directory *temp = current->firstChild;
+    Directory *anterior = NULL;
+
+    while (temp != NULL)
+    {
+        if (strcmp(temp->name, name) == 0)
+        {
+            if (anterior == NULL)
+            {
+                current->firstChild = temp->nextSibling;
+            }
+            else
+            {
+                anterior->nextSibling = temp->nextSibling;
+            }
+
+            freeDirectory(temp);
+
+            printf("Diretorio '%s' removido.\n", name);
+            return;
+        }
+
+        anterior = temp;
+        temp = temp->nextSibling;
+    }
+
+    printf("Diretorio '%s' nao encontrado.\n", name);
+}

@@ -1,27 +1,34 @@
-#include <stdio.h> 
+#include <stdio.h>
 #include "directory.h"
 
 int main()
 {
     Directory *root = createDirectory("/");
 
+    // Cria diretórios na raiz
     mkdirDirectory(root, "documentos");
     mkdirDirectory(root, "fotos");
+    mkdirDirectory(root, "downloads");
 
-    Directory *current = root;
-
-    printf("Conteudo da raiz:\n");
+    printf("=== Conteudo inicial da raiz ===\n");
     ls(root);
 
-    current = cd(current, "documentos");
+    printf("\n");
 
-    printf("\nDiretorio atual: %s\n", current->name);
+    // Remove fotos
+    rm(root, "fotos");
 
-    current = cd(current, "..");
+    printf("\n=== Conteudo apos remover 'fotos' ===\n");
+    ls(root);
 
-    printf("Diretorio atual: %s\n", current->name);
+    printf("\n");
+
+    // Tenta remover um diretório inexistente
+    rm(root, "musicas");
+
+    printf("\n=== Conteudo final ===\n");
+    ls(root);
 
     getchar();
-
     return 0;
 }
