@@ -29,10 +29,7 @@ gcc main.c directory.c -o sistema.exe
 
 ## Próximas Funcionalidades
 
-* cd
-* pwd
 * touch
-* rm
 * Persistência em arquivo
 
 ```
